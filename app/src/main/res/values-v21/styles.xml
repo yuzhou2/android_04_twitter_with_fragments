@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="homeAsUpIndicator">@drawable/ic_action_back_home_dark</item>
+        <item name="colorPrimaryDark">@color/tw__blue_pressed</item>
+        <item name="colorPrimary">@color/tw__blue_default</item>
+        <item name="android:textColorPrimary">@color/tw__light_gray</item>
+        <item name="android:windowBackground">@color/tw__solid_white</item>
+    </style>
+
+    <style name="AppTheme.EditText" parent="AppTheme">
+        <item name="android:colorControlNormal">@color/tw__light_gray</item>
+        <item name="android:colorControlActivated">@color/tw__light_gray</item>
+        <item name="android:colorControlHighlight">@color/tw__light_gray</item>
+    </style>
+
+</resources>
