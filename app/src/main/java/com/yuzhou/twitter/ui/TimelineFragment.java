@@ -1,13 +1,12 @@
 package com.yuzhou.twitter.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -22,27 +21,30 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimelineActivity extends ActionBarActivity
+/**
+ * Created by yuzhou on 2015/08/17.
+ */
+public class TimelineFragment extends Fragment
 {
+    private View view;
     private TweetAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
+        view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        adapter = new TweetAdapter(view.getContext(), new ArrayList<Tweet>());
 
-        adapter = new TweetAdapter(this, new ArrayList<Tweet>());
-
-        setupHomeLogo();
         setupTimeline();
         setupPullToRefresh();
         queryNewTweets();
+
+        return view;
     }
 
     private void setupPullToRefresh()
     {
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.timeline__rl_swipe);
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.timeline__rl_swipe);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             @Override
@@ -60,54 +62,10 @@ public class TimelineActivity extends ActionBarActivity
                 android.R.color.holo_red_light);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_timeline, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_compose) {
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, 0);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            queryNewTweets();
-        }
-    }
-
-    private void setupHomeLogo()
-    {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getResources().getString(R.string.title_home));
-        actionBar.setLogo(R.drawable.tw__ic_logo_default);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-    }
-
     private void setupTimeline()
     {
-        ListView lvTimeline = (ListView) findViewById(R.id.timeline__lv_list);
-        lvTimeline.setEmptyView(findViewById(R.id.timeline__tv_empty));
+        ListView lvTimeline = (ListView) view.findViewById(R.id.timeline__lv_list);
+        lvTimeline.setEmptyView(view.findViewById(R.id.timeline__tv_empty));
         lvTimeline.setAdapter(adapter);
         lvTimeline.setOnScrollListener(new EndlessScrollListener()
         {

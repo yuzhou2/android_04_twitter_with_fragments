@@ -36,7 +36,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient>
                 "\nAuth Token Received: " +
                 getClient().checkAccessToken().getToken();
         status.setText(output);
-        startActivity(new Intent(this, TimelineActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     // OAuth authentication flow failed, handle the error
