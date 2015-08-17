@@ -11,8 +11,6 @@ import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yuzhou.twitter.R;
-import com.yuzhou.twitter.RestApplication;
-import com.yuzhou.twitter.api.RestClient;
 import com.yuzhou.twitter.models.Tweet;
 
 import org.apache.http.Header;
@@ -24,7 +22,7 @@ import java.util.List;
 /**
  * Created by yuzhou on 2015/08/17.
  */
-public class TimelineFragment extends Fragment
+abstract public class AbstractTimelineFragment extends Fragment
 {
     private View view;
     private TweetAdapter adapter;
@@ -83,26 +81,24 @@ public class TimelineFragment extends Fragment
         queryTweets(1);
     }
 
-    private void queryTweets(int page)
-    {
-        RestClient client = RestApplication.getRestClient();
-        client.getHomeTimeline(page, new JsonHttpResponseHandler()
-        {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json)
-            {
-                // Response is automatically parsed into a JSONArray
-                Log.d("DEBUG", "timeline: " + json.toString());
-                List<Tweet> tweets = Tweet.fromJson(json);
-                adapter.addAll(tweets);
-            }
+    abstract protected void queryTweets(int page);
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
-            {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
+    protected class HttpResponseHandler extends JsonHttpResponseHandler
+    {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONArray json)
+        {
+            // Response is automatically parsed into a JSONArray
+            Log.d("DEBUG", "timeline: " + json.toString());
+            List<Tweet> tweets = Tweet.fromJson(json);
+            adapter.addAll(tweets);
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
+        {
+            super.onFailure(statusCode, headers, responseString, throwable);
+        }
     }
 
 }

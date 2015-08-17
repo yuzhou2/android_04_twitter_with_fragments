@@ -59,7 +59,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient>
     private void setupHomeLogo()
     {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getResources().getString(R.string.title_home));
+        actionBar.setTitle(getResources().getString(R.string.title_timeline));
         actionBar.setLogo(R.drawable.tw__ic_logo_default);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);

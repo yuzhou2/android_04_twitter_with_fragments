@@ -6,13 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.yuzhou.twitter.R;
+import com.yuzhou.twitter.RestApplication;
+import com.yuzhou.twitter.api.RestClient;
 
 /**
  * Created by yuzhou on 2015/08/16.
  */
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter
 {
-    private final int tabTitles[] = new int[]{R.string.title_home, R.string.title_mentions};
+    private final int tabTitles[] = new int[]{R.string.title_timeline, R.string.title_mentions};
     private final int pageCount = tabTitles.length;
     private Context context;
 
@@ -33,7 +35,9 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
     {
         switch (position) {
         case 0:
-            return new TimelineFragment();
+            return new HomeTimelineFragment();
+        case 1:
+            return new MentionsTimelineFragment();
         }
 
         return PageFragment.newInstance(position + 1);
@@ -42,7 +46,27 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
     @Override
     public CharSequence getPageTitle(int position)
     {
-        return context.getString(tabTitles[position]);
+        return context.getString(tabTitles[position]).toUpperCase();
+    }
+
+    private static class HomeTimelineFragment extends AbstractTimelineFragment
+    {
+        @Override
+        protected void queryTweets(int page)
+        {
+            RestClient client = RestApplication.getRestClient();
+            client.getHomeTimeline(page, new HttpResponseHandler());
+        }
+    }
+
+    private static class MentionsTimelineFragment extends AbstractTimelineFragment
+    {
+        @Override
+        protected void queryTweets(int page)
+        {
+            RestClient client = RestApplication.getRestClient();
+            client.getMentionsTimeline(page, new HttpResponseHandler());
+        }
     }
 
 }

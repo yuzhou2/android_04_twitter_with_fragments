@@ -14,6 +14,8 @@ import com.yuzhou.twitter.R;
 public class MainActivity extends ActionBarActivity
 {
 
+    private MainFragmentPagerAdapter pagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -23,8 +25,9 @@ public class MainActivity extends ActionBarActivity
         setupHomeLogo();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
+        pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
         ViewPager viewPager = (ViewPager) findViewById(R.id.main__viewpager);
-        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+        viewPager.setAdapter(pagerAdapter);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main__sliding_tabs);
@@ -48,7 +51,7 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_action_post) {
+        if (id == R.id.main__action_post) {
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, 0);
             return true;
@@ -68,7 +71,7 @@ public class MainActivity extends ActionBarActivity
     private void setupHomeLogo()
     {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getResources().getString(R.string.title_home));
+        actionBar.setTitle(getResources().getString(R.string.title_activity_main));
         actionBar.setLogo(R.drawable.tw__ic_logo_default);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);

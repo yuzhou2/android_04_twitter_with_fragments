@@ -10,9 +10,12 @@
 
     <!-- activity_main.xml -->
     <string name="title_activity_main"></string>
-    <string name="title_home">Home</string>
+    <string name="title_timeline">Home</string>
     <string name="title_mentions">Mentions</string>
+    <string name="action_search">Search</string>
     <string name="action_compose">Compose</string>
+    <string name="action_mail">Mail</string>
+    <string name="action_profile">Profile</string>
 
     <!-- fragment_timeline.xml -->
     <string name="no_tweet">No tweet</string>

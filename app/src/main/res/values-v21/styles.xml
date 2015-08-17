@@ -6,7 +6,7 @@
         <item name="homeAsUpIndicator">@drawable/ic_action_back_home_dark</item>
         <item name="colorPrimaryDark">@color/tw__blue_pressed</item>
         <item name="colorPrimary">@color/tw__blue_default</item>
-        <item name="android:textColorPrimary">@color/tw__light_gray</item>
+        <item name="android:textColorPrimary">@color/tw__solid_white</item>
         <item name="android:windowBackground">@color/tw__solid_white</item>
     </style>
 
@@ -14,6 +14,22 @@
         <item name="android:colorControlNormal">@color/tw__light_gray</item>
         <item name="android:colorControlActivated">@color/tw__light_gray</item>
         <item name="android:colorControlHighlight">@color/tw__light_gray</item>
+    </style>
+
+    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/tw__blue_default</item>
+        <item name="tabIndicatorColor">@color/tw__blue_default</item>
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabPaddingStart">0dp</item>
+        <item name="tabPaddingEnd">0dp</item>
+        <item name="android:textColor">@color/tw__blue_default</item>
+        <item name="tabTextAppearance">@style/AppTheme.TextAppearance</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/tw__blue_default</item>
+        <item name="textAllCaps">true</item>
     </style>
 
 </resources>

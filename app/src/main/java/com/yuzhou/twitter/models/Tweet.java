@@ -73,7 +73,6 @@ public class Tweet
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject tweetJson = jsonArray.getJSONObject(i);
-                Log.d("DEBUG", "tweet: " + tweetJson.toString());
                 Tweet tweet = new Tweet(tweetJson);
                 tweets.add(tweet);
             } catch (Exception e) {

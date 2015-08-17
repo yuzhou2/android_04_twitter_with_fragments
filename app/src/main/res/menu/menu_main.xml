@@ -4,10 +4,31 @@
       tools:context="com.yuzhou.twitter.ui.MainActivity">
 
     <item
-        android:id="@+id/menu_action_post"
+        android:id="@+id/main__action_search"
+        android:icon="@drawable/ic_action_search_dark"
+        android:orderInCategory="100"
+        android:title="@string/action_search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/main__action_post"
         android:icon="@drawable/ic_action_compose_dark"
         android:orderInCategory="100"
         android:title="@string/action_compose"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/main__action_mail"
+        android:icon="@drawable/ic_action_mail_dark"
+        android:orderInCategory="100"
+        android:title="@string/action_mail"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/main__action_profile"
+        android:icon="@drawable/ic_action_profile_dark"
+        android:orderInCategory="100"
+        android:title="@string/action_profile"
+        app:showAsAction="always"/>
 
 </menu>
