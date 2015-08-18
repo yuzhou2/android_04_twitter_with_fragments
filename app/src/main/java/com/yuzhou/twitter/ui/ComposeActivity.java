@@ -34,8 +34,8 @@ public class ComposeActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
-        queryUserCredential();
         setupActionBar();
+        queryUserCredential();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ComposeActivity extends ActionBarActivity
     {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("");
+        actionBar.setTitle(R.string.title_activity_compose);
     }
 
     private void queryUserCredential()

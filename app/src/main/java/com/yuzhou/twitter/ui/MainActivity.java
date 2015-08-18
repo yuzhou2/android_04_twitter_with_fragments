@@ -52,8 +52,11 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.main__action_post) {
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, 0);
+            startActivityForResult(new Intent(this, ComposeActivity.class), 0);
+            return true;
+        }
+        if (id == R.id.main__action_profile) {
+            startActivityForResult(new Intent(this, ProfileActivity.class), 0);
             return true;
         }
 

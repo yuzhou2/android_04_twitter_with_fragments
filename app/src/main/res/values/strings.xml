@@ -9,7 +9,7 @@
     <string name="skip">skip</string>
 
     <!-- activity_main.xml -->
-    <string name="title_activity_main"></string>
+    <string name="title_activity_main"/>
     <string name="title_timeline">Home</string>
     <string name="title_mentions">Mentions</string>
     <string name="action_search">Search</string>
@@ -25,11 +25,26 @@
     <string name="action_post">Tweet</string>
     <string name="hint_compose">What\'s happening?</string>
 
+    <!-- activity_profile.xml -->
+    <string name="title_activity_profile">Profile</string>
+    <string name="tweets">tweets</string>
+    <string name="following">following</string>
+    <string name="followers">followers</string>
+
     <!-- error or warning -->
     <string name="error_unavailable_network">Network is unavailable</string>
     <string name="error_cannot_tweet">Can not tweet to server</string>
     <string name="warn_compose_empty_text">What do you want to tweet?</string>
 
-    <!-- -->
+    <!-- default: item_tweet -->
+    <string name="user_name">User Name</string>
+    <string name="screen_name">Screen Name</string>
+    <string name="profile_image">profile image</string>
+    <string name="create_time">Create Time</string>
+    <string name="text_body">Text Body</string>
+    <string name="reply">reply</string>
+    <string name="retweet">retweet</string>
+    <string name="favorite">favorite</string>
+    <string name="zero">0</string>
 
 </resources>

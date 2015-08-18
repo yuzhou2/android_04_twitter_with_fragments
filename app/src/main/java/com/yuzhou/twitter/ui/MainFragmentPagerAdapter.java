@@ -38,9 +38,15 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
             return new HomeTimelineFragment();
         case 1:
             return new MentionsTimelineFragment();
+        default:
+            return new AbstractTimelineFragment()
+            {
+                @Override
+                protected void queryTweets(int page)
+                {
+                }
+            };
         }
-
-        return PageFragment.newInstance(position + 1);
     }
 
     @Override
