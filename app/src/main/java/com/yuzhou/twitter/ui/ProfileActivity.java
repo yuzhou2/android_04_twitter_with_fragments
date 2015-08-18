@@ -1,13 +1,16 @@
 package com.yuzhou.twitter.ui;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -21,6 +24,7 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends ActionBarActivity
 {
+    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,7 +32,16 @@ public class ProfileActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Intent intent = getIntent();
+        userId = intent.getLongExtra("user_id", 0);
+
         setupActionBar();
+
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, R.string.error_unavailable_network, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         queryUserProfile();
         queryUserTimeline();
     }
@@ -36,8 +49,9 @@ public class ProfileActivity extends ActionBarActivity
     @Override
     public Intent getSupportParentActivityIntent()
     {
-        finish();
-        return null;
+        return super.getSupportParentActivityIntent();
+        //finish();
+        //return null;
     }
 
     private void setupActionBar()
@@ -47,36 +61,26 @@ public class ProfileActivity extends ActionBarActivity
         actionBar.setTitle(R.string.title_activity_profile);
     }
 
+    private boolean isNetworkAvailable()
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
     private void queryUserProfile()
     {
         RestClient client = RestApplication.getRestClient();
-        client.getUserCredential(new JsonHttpResponseHandler()
-        {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject json)
-            {
-                // Response is automatically parsed into a JSONArray
-                Log.d("DEBUG", "credential: " + json.toString());
-                User user = new User(json);
-                updateUserProfile(user);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
-            {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
+        if (userId > 0) {
+            client.getUser(userId, new UserProfileHttpResponseHandler());
+        } else {
+            client.getUserCredential(new UserProfileHttpResponseHandler());
+        }
     }
 
     private void updateUserProfile(User user)
     {
-        ImageView background = (ImageView) findViewById(R.id.profile__iv_background);
-        background.setBackgroundColor(Color.parseColor(user.getQProfileBackgroundColor()));
-        if (user.isProfileBackgroundTile() && !user.getProfileBackgroundImageUrl().isEmpty()) {
-            Picasso.with(this).load(user.getProfileBackgroundImageUrl()).into((ImageView) findViewById(R.id.profile__iv_background));
-        }
-
+        Picasso.with(this).load(user.getProfileBannerUrl()).into((ImageView) findViewById(R.id.profile__iv_profile_banner));
         Picasso.with(this).load(user.getProfileImageUrl()).into((ImageView) findViewById(R.id.profile__iv_profile_image));
         ((TextView) findViewById(R.id.profile__tv_user_name)).setText(user.getName());
         ((TextView) findViewById(R.id.profile__tv_screen_name)).setText(user.getQScreenName());
@@ -91,13 +95,35 @@ public class ProfileActivity extends ActionBarActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.profile__timeline, fragment).commit();
     }
 
-    private static class UserTimelineFragment extends AbstractTimelineFragment
+    private class UserTimelineFragment extends AbstractTimelineFragment
     {
         @Override
-        protected void queryTweets(int page)
+        protected void queryTweetsAt(int page)
         {
             RestClient client = RestApplication.getRestClient();
-            client.getUserTimeline(page, new AbstractTimelineFragment.HttpResponseHandler());
+            if (userId > 0) {
+                client.getUserTimeline(userId, page, new HttpResponseHandler());
+            } else {
+                client.getUserTimeline(page, new HttpResponseHandler());
+            }
+        }
+    }
+
+    private class UserProfileHttpResponseHandler extends JsonHttpResponseHandler
+    {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject json)
+        {
+            // Response is automatically parsed into a JSONObject
+            Log.d("DEBUG", "credential: " + json.toString());
+            User user = new User(json);
+            updateUserProfile(user);
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json)
+        {
+            super.onFailure(statusCode, headers, throwable, json);
         }
     }
 

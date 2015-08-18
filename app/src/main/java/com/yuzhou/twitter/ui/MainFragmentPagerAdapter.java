@@ -42,7 +42,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
             return new AbstractTimelineFragment()
             {
                 @Override
-                protected void queryTweets(int page)
+                protected void queryTweetsAt(int page)
                 {
                 }
             };
@@ -58,7 +58,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
     private static class HomeTimelineFragment extends AbstractTimelineFragment
     {
         @Override
-        protected void queryTweets(int page)
+        protected void queryTweetsAt(int page)
         {
             RestClient client = RestApplication.getRestClient();
             client.getHomeTimeline(page, new HttpResponseHandler());
@@ -68,7 +68,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
     private static class MentionsTimelineFragment extends AbstractTimelineFragment
     {
         @Override
-        protected void queryTweets(int page)
+        protected void queryTweetsAt(int page)
         {
             RestClient client = RestApplication.getRestClient();
             client.getMentionsTimeline(page, new HttpResponseHandler());

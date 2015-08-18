@@ -1,6 +1,7 @@
 package com.yuzhou.twitter.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class TweetAdapter extends ArrayAdapter<Tweet>
             convertView.setTag(holder);
         }
 
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(holder.profileImage);
         holder.userName.setText(tweet.getUser().getName());
         holder.screenName.setText(tweet.getUser().getQScreenName());
@@ -62,6 +63,17 @@ public class TweetAdapter extends ArrayAdapter<Tweet>
         ImageAdapter mediaAdapter = new ImageAdapter(getContext(), tweet.getExtendedEntities().getMediaList());
         holder.images.setNumColumns(numColumns);
         holder.images.setAdapter(mediaAdapter);
+
+        holder.profileImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                intent.putExtra("user_id", tweet.getUser().getId());
+                getContext().startActivity(intent);
+            }
+        });
 
         return convertView;
     }

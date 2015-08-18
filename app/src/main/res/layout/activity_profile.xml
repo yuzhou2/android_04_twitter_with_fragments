@@ -10,12 +10,13 @@
 
 
     <ImageView
-        android:id="@+id/profile__iv_background"
+        android:id="@+id/profile__iv_profile_banner"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/tw__blue_default"/>
+        android:background="@color/tw__blue_default"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:id="@+id/profile__iv_profile_image"
@@ -53,7 +54,7 @@
         android:id="@+id/profile__grid"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/profile__iv_background"
+        android:layout_below="@+id/profile__iv_profile_banner"
         android:background="@color/tw__light_gray"
         android:columnCount="3">
 

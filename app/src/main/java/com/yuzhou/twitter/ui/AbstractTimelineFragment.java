@@ -1,5 +1,8 @@
 package com.yuzhou.twitter.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yuzhou.twitter.R;
@@ -40,6 +44,20 @@ abstract public class AbstractTimelineFragment extends Fragment
         return view;
     }
 
+    private void setupTimeline()
+    {
+        ListView lvTimeline = (ListView) view.findViewById(R.id.timeline__lv_list);
+        lvTimeline.setAdapter(adapter);
+        lvTimeline.setOnScrollListener(new EndlessScrollListener()
+        {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount)
+            {
+                queryTweets(page);
+            }
+        });
+    }
+
     private void setupPullToRefresh()
     {
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.timeline__rl_swipe);
@@ -60,28 +78,29 @@ abstract public class AbstractTimelineFragment extends Fragment
                 android.R.color.holo_red_light);
     }
 
-    private void setupTimeline()
-    {
-        ListView lvTimeline = (ListView) view.findViewById(R.id.timeline__lv_list);
-        lvTimeline.setEmptyView(view.findViewById(R.id.timeline__tv_empty));
-        lvTimeline.setAdapter(adapter);
-        lvTimeline.setOnScrollListener(new EndlessScrollListener()
-        {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount)
-            {
-                queryTweets(page);
-            }
-        });
-    }
-
     private void queryNewTweets()
     {
         adapter.clear();
         queryTweets(1);
     }
 
-    abstract protected void queryTweets(int page);
+    private void queryTweets(int page)
+    {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(view.getContext(), R.string.error_unavailable_network, Toast.LENGTH_LONG).show();
+            return;
+        }
+        queryTweetsAt(page);
+    }
+
+    abstract protected void queryTweetsAt(int page);
+
+    private boolean isNetworkAvailable()
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
 
     protected class HttpResponseHandler extends JsonHttpResponseHandler
     {
@@ -95,9 +114,9 @@ abstract public class AbstractTimelineFragment extends Fragment
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray json)
         {
-            super.onFailure(statusCode, headers, responseString, throwable);
+            super.onFailure(statusCode, headers, throwable, json);
         }
     }
 

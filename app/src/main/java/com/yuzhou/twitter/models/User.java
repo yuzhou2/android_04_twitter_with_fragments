@@ -15,13 +15,11 @@ import lombok.ToString;
 @ToString
 public class User
 {
+    @Getter @Setter private long id;
     @Getter @Setter private String name;
     @Getter @Setter private String screenName;
     @Getter @Setter private String profileImageUrl;
-
-    @Getter @Setter private String profileBackgroundColor;
-    @Getter @Setter private boolean profileBackgroundTile;
-    @Getter @Setter private String profileBackgroundImageUrl;
+    @Getter @Setter private String profileBannerUrl;
 
     @Getter @Setter private int tweetsCount;
     @Getter @Setter private int followingCount;
@@ -34,13 +32,11 @@ public class User
     public User(JSONObject json)
     {
         try {
+            id = json.getLong("id");
             name = json.getString("name");
             screenName = json.getString("screen_name");
             profileImageUrl = json.getString("profile_image_url");
-
-            profileBackgroundColor = json.getString("profile_background_color");
-            profileBackgroundTile = json.getBoolean("profile_background_tile");
-            profileBackgroundImageUrl = json.getString("profile_background_image_url");
+            profileBannerUrl = json.getString("profile_banner_url");
 
             tweetsCount = json.getInt("statuses_count");
             followingCount = json.getInt("friends_count");
@@ -56,14 +52,6 @@ public class User
             return "@" + screenName;
         }
         return screenName;
-    }
-
-    public String getQProfileBackgroundColor()
-    {
-        if (profileBackgroundColor != null && !profileBackgroundColor.isEmpty()) {
-            return "#" + profileBackgroundColor;
-        }
-        return profileBackgroundColor;
     }
 
 }
