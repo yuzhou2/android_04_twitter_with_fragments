@@ -1,5 +1,8 @@
 package com.yuzhou.twitter.models;
 
+import android.support.annotation.NonNull;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -24,13 +27,16 @@ public class Entity
         mediaList = new ArrayList<>(0);
     }
 
-    public Entity(JSONObject json)
+    public Entity(@NonNull JSONObject json)
     {
         mediaList = new ArrayList<>();
+
         try {
-            mediaList.addAll(Media.fromJson(json.getJSONArray("media")));
-        } catch (Exception e) {
-            //e.printStackTrace();
+            if (!json.isNull("media")) {
+                mediaList.addAll(Media.fromJson(json.getJSONArray("media")));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

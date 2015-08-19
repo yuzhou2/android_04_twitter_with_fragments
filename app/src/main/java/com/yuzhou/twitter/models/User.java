@@ -1,5 +1,7 @@
 package com.yuzhou.twitter.models;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,18 +31,18 @@ public class User
     {
     }
 
-    public User(JSONObject json)
+    public User(@NonNull JSONObject json)
     {
         try {
             id = json.getLong("id");
             name = json.getString("name");
             screenName = json.getString("screen_name");
-            profileImageUrl = json.getString("profile_image_url");
-            profileBannerUrl = json.getString("profile_banner_url");
+            profileImageUrl = json.optString("profile_image_url", null);
+            profileBannerUrl = json.optString("profile_banner_url", null);
 
-            tweetsCount = json.getInt("statuses_count");
-            followingCount = json.getInt("friends_count");
-            followersCount = json.getInt("followers_count");
+            tweetsCount = json.optInt("statuses_count", 0);
+            followingCount = json.optInt("friends_count", 0);
+            followersCount = json.optInt("followers_count", 0);
         } catch (JSONException e) {
             e.printStackTrace();
         }

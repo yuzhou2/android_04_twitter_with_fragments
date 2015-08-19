@@ -68,6 +68,7 @@ public class MainActivity extends ActionBarActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0 && resultCode == RESULT_OK) {
+            pagerAdapter.notifyDataSetChanged();
         }
     }
 

@@ -1,5 +1,7 @@
 package com.yuzhou.twitter.models;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,31 +27,27 @@ public class Media
     {
     }
 
-    public Media(JSONObject json)
+    public Media(@NonNull JSONObject json)
     {
-        try {
-            mediaUrl = json.getString("media_url");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        mediaUrl = json.optString("media_url", null);
     }
 
-    public static final List<Media> fromJson(JSONArray jsonArray)
+    public static final List<Media> fromJson(@NonNull JSONArray jsonArray)
     {
-        List<Media> mediaList = new ArrayList<>(jsonArray.length());
+        List<Media> result = new ArrayList<>(jsonArray.length());
 
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject mediaJson = jsonArray.getJSONObject(i);
                 Media media = new Media(mediaJson);
-                mediaList.add(media);
-            } catch (Exception e) {
+                result.add(media);
+            } catch (JSONException e) {
                 e.printStackTrace();
                 continue;
             }
         }
 
-        return mediaList;
+        return result;
     }
 
 }

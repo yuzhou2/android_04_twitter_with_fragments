@@ -58,7 +58,7 @@ public class TweetAdapter extends ArrayAdapter<Tweet>
         holder.favoriteCount.setText(String.valueOf(tweet.getFavoriteCount()));
 
         int imageCount = tweet.getExtendedEntities().getMediaList().size();
-        int numColumns = Math.min(3, imageCount);
+        int numColumns = (imageCount > 3) ? 3 : imageCount;
 
         ImageAdapter mediaAdapter = new ImageAdapter(getContext(), tweet.getExtendedEntities().getMediaList());
         holder.images.setNumColumns(numColumns);

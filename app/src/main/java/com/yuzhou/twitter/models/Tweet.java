@@ -1,7 +1,5 @@
 package com.yuzhou.twitter.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,10 +42,13 @@ public class Tweet
             user = new User(json.getJSONObject("user"));
             createTime = getTwitterDate(json.getString("created_at")).getTime();
             text = json.getString("text");
-            retweetCount = json.getInt("retweet_count");
-            favoriteCount = json.getInt("favorite_count");
-            entities = new Entity(json.getJSONObject("entities"));
 
+            retweetCount = json.optInt("retweet_count", 0);
+            favoriteCount = json.optInt("favorite_count", 0);
+
+            if (!json.isNull("entities")) {
+                entities = new Entity(json.getJSONObject("entities"));
+            }
             if (!json.isNull("extended_entities")) {
                 extendedEntities = new Entity(json.getJSONObject("extended_entities"));
             }
@@ -71,14 +72,9 @@ public class Tweet
         List<Tweet> tweets = new ArrayList<>(jsonArray.length());
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            try {
-                JSONObject tweetJson = jsonArray.getJSONObject(i);
-                Tweet tweet = new Tweet(tweetJson);
-                tweets.add(tweet);
-            } catch (Exception e) {
-                e.printStackTrace();
-                continue;
-            }
+            JSONObject tweetJson = jsonArray.optJSONObject(i);
+            Tweet tweet = new Tweet(tweetJson);
+            tweets.add(tweet);
         }
 
         return tweets;
